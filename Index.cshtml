@@ -1,0 +1,41 @@
+@using CognitoMetric.Models
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> UserManager
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+<div id="summary">
+    <p id="totalTime">Loading...</p>
+</div>
+
+<div id="charts">
+    <div>
+        <h3>Frequency Grid</h3>
+        <svg id="frequencyGrid" width="900" height="300"></svg>
+    </div>
+
+    <div style="margin-top:20px;">
+        <h3>App Usage Correlation (Attention vs Duration)</h3>
+        <svg id="correlationChart" width="700" height="360"></svg>
+    </div>
+</div>
+
+<script>
+    // tokenless fetch will rely on cookies; ensure user is logged-in in browser
+    fetch('/api/Api/me/usage')
+        .then(r => { if (!r.ok) throw new Error('Not authorized'); return r.json(); })
+        .then(data => window._usageData = data)
+        .then(() => {
+            // call D3 renderer
+            renderFrequencyGrid(window._usageData, '#frequencyGrid');
+            renderCorrelation(window._usageData, '#correlationChart');
+            document.getElementById('totalTime').innerText = 'Total sessions: ' + window._usageData.length;
+        })
+        .catch(err => {
+            document.getElementById('totalTime').innerText = 'Please log in to see dashboard.';
+            console.error(err);
+        });
+</script>
+<script src="~/js/dashboard.js"></script>

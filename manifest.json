@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "CognitoMetric Tracker (dev)",
+  "version": "1.0",
+  "description": "Track active tab usage and send sessions to the CognitoMetric API (dev).",
+  "permissions": ["tabs", "storage", "alarms", "activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "CognitoMetric"
+  },
+  "host_permissions": ["<all_urls>"]
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <body>
+    <h3>CognitoMetric Extension Options</h3>
+    <label>API endpoint (full): <input id="endpoint" style="width:60%"/></label><br/>
+    <label>API Key (dev): <input id="apiKey" /></label><br/>
+    <button id="save">Save</button>
+    <script>
+      document.getElementById('save').onclick = () => {
+        chrome.storage.sync.set({
+          apiKey: document.getElementById('apiKey').value,
+          endpoint: document.getElementById('endpoint').value
+        }, ()=> alert('Saved'));
+      };
+
+      chrome.storage.sync.get(['apiKey','endpoint'], (res) => {
+        document.getElementById('apiKey').value = res.apiKey || '';
+        document.getElementById('endpoint').value = res.endpoint || '';
+      });
+    </script>
+  </body>
+</html>
